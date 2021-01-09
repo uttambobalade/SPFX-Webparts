@@ -19,7 +19,7 @@
     "group": { "default": "Other" },
     "title": { "default": "WebpartPropertiesPane" },
     "description": { "default": "WebpartPropertiesPane description" },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "FormProcessing",
     "properties": {
       
       // "productname": "Enter name",
