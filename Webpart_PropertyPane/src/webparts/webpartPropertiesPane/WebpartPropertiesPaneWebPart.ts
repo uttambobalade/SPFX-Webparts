@@ -1,7 +1,9 @@
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneToggle,
+  PropertyPaneSlider
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { escape } from '@microsoft/sp-lodash-subset';
@@ -18,10 +20,30 @@ export interface IWebpartPropertiesPaneWebPartProps {
   billamount: number;
   discount: number;
   netbillamount: number;
+  iscertified: boolean;
+  rating: number;
 
 }
 
 export default class WebpartPropertiesPaneWebPart extends BaseClientSideWebPart<IWebpartPropertiesPaneWebPartProps> {
+
+
+  protected onInit(): Promise<void> {
+
+    return new Promise<void>((resolve, _reject) => {
+      this.properties.productname = "key board";
+      this.properties.productdescription = "Wireless Kay board";
+      this.properties.productcost = 50;
+      this.properties.quantity = 10;
+      this.properties.iscertified = false;
+      this.properties.rating = 1;
+      resolve(undefined);
+    });
+  }
+
+  protected get disableReactivePropertyChanges(): boolean {
+    return true;
+  }
 
   public render(): void {
     this.domElement.innerHTML = `
@@ -34,32 +56,40 @@ export default class WebpartPropertiesPaneWebPart extends BaseClientSideWebPart<
               <br/>
               <table>
                 <tr>
-                  <td>Product Name :</td>
+                  <td>Product Name(text) :</td>
                   <td>${this.properties.productname}</td>
                 </tr>
                  <tr>
-                  <td>Product Description :</td>
+                  <td>Product Description(text) :</td>
                   <td>${this.properties.productdescription}</td>
                 </tr>
                 <tr>
-                  <td>Product Cost :</td>
+                  <td>Product Cost(text) :</td>
                   <td>${this.properties.productcost}</td>
                 </tr>
                 <tr>
-                  <td>Product Quantity :</td>
+                  <td>Product Quantity(text) :</td>
                   <td>${this.properties.quantity}</td>
                 </tr>
                 <tr>
-                  <td>Bill Amount :</td>
+                  <td>Bill Amount(text) :</td>
                   <td>${this.properties.billamount = this.properties.productcost * this.properties.quantity}</td>
                 </tr>
                 <tr>
-                  <td>Discount :</td>
+                  <td>Discount(text) :</td>
                   <td>${this.properties.discount = this.properties.billamount * 10 / 100}</td>
                 </tr>
                 <tr>
-                  <td>Net Bill Amount :</td>
+                  <td>Net Bill Amount(text) :</td>
                   <td>${this.properties.netbillamount = this.properties.billamount - this.properties.discount}</td>
+                </tr>
+                <tr>
+                  <td>Is Certified?(toggle) :</td>
+                  <td>${this.properties.iscertified}</td>
+                </tr>
+                <tr>
+                  <td>Rating(slider) :</td>
+                  <td>${this.properties.rating}</td>
                 </tr>
               </table>
             </div>
@@ -106,6 +136,21 @@ export default class WebpartPropertiesPaneWebPart extends BaseClientSideWebPart<
                   multiline: false,
                   resizable: false,
                   placeholder: "Please enter Quantity", "description": "Number field"
+                }),
+
+                PropertyPaneToggle('iscertified', {
+                  key: "iscertified",
+                  label: "Is Centified?",
+                  onText: "ISI Certified !",
+                  offText: "Not Certified"
+                }),
+                PropertyPaneSlider('rating', {
+                  label: "Rate the Product",
+                  min: 1,
+                  max: 10,
+                  step: 1,
+                  value: 1,
+                  showValue: true
                 })
 
               ]
@@ -116,25 +161,5 @@ export default class WebpartPropertiesPaneWebPart extends BaseClientSideWebPart<
     }
   }
 
-  // protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-  //   return {
-  //     pages: [
-  //       {
-  //         header: {
-  //           description: strings.PropertyPaneDescription
-  //         },
-  //         groups: [
-  //           {
-  //             groupName: strings.BasicGroupName,
-  //             groupFields: [
-  //               PropertyPaneTextField('description', {
-  //                 label: strings.DescriptionFieldLabel
-  //               })
-  //             ]
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   };
-  // }
+
 }

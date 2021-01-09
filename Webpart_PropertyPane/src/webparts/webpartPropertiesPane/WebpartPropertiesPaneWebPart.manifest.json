@@ -22,13 +22,13 @@
     "officeFabricIconFontName": "Page",
     "properties": {
       
-      "productname": "Enter name",
-      "productdescription": "Enter description",
-      "productcost": 0,
-      "quantity": 0,
-      "billamount": 0,
-      "discount": 0,
-      "netbillamount": 0
+      // "productname": "Enter name",
+      // "productdescription": "Enter description",
+      // "productcost": 0,
+      // "quantity": 0,
+      // "billamount": 0,
+      // "discount": 0,
+      // "netbillamount": 0
 
     }
   }]
