@@ -9,7 +9,7 @@ export interface IListItemWPState {
   listItems: [
     {
       "Title": "",
-      "Client": "",
+      "Client": { "Title": "" },
       "Status": "",
       "Id": "",
     }
@@ -26,7 +26,7 @@ export default class SpListDispReactDemo extends React.Component<ISpListDispReac
       listItems: [
         {
           "Title": "",
-          "Client": "",
+          "Client": { "Title": "" },
           "Status": "",
           "Id": "",
         }
@@ -38,41 +38,50 @@ export default class SpListDispReactDemo extends React.Component<ISpListDispReac
   public componentDidMount() {
     let reactContext = this;
     jquery.ajax({
-      url: `${SpListDispReactDemo.siteURL}/_api/web/lists/getbytitle('Order_Details')/items`,
+      url: `${SpListDispReactDemo.siteURL}/_api/web/lists/getbytitle('Order_Details')/items?$select=Client/Title,Id,Status,Title&$expand=Client/Title`,
       type: "GET",
       headers: { 'Accept': 'application/json; odata=verbose;' },
       success: function (result) {
+        console.log(JSON.stringify(result));
         reactContext.setState({
           listItems: result.d.results
         });
+        console.log(result.d.results);
       },
       error: function (jqXHR, textstatus, error) {
       }
     });
-
   }
 
   public render(): React.ReactElement<ISpListDispReactDemoProps> {
     return (
-      <div className={styles.spListDispReactDemo}>
-        <table className={styles.row} >
+      <div className={styles.panelStyle}>
+        <table className={styles.tableStyle} >
+          <tr className={styles.headerStyle}>
+            <td className={styles.CellStyle}>Title</td>
+            <td className={styles.CellStyle}>Id</td>
+            <td className={styles.CellStyle}>Client</td>
+            <td className={styles.CellStyle}>Status</td>
+          </tr>
           {
             this.state.listItems.map(function (listitem, llistitemkey) {
               let itemURL: string = `${SpListDispReactDemo.siteURL}//Lists/Order_Details/dispform.aspx?ID=${listitem.Id}`;
 
               return (
-                <tr>
+                <tr className={styles.rowStyle}>
                   <td>
-                    <a className={styles.label} href={itemURL} >{listitem.Title}</a>
+                    <a className={styles.CellStyle} href={itemURL} >{listitem.Title}</a>
                   </td>
-                  <td className={styles.label} >{listitem.Id}</td>
-                  <td className={styles.label} >{listitem.Client}</td>
-                  <td className={styles.label} >{listitem.Status}</td>
+                  <td className={styles.CellStyle} >{listitem.Id}</td>
+                  <td className={styles.CellStyle} >{listitem.Client.Title}</td>
+                  <td className={styles.CellStyle} >{listitem.Status}</td>
                 </tr>
               );
             })
           }
         </table>
+        <br></br>
+        <h3>-- Orderd List -- </h3>
         <ol>
           {
             this.state.listItems.map(function (listitem, llistitemkey) {
@@ -80,7 +89,7 @@ export default class SpListDispReactDemo extends React.Component<ISpListDispReac
               return (
                 <li>
                   <a className={styles.label} href={itemURL} >
-                    <span>{listitem.Title}</span> - <span>{listitem.Id} </span> - <span>{listitem.Client}</span> - <span>{listitem.Status}</span>
+                    <span>{listitem.Title}</span> - <span>{listitem.Id} </span> - <span>{listitem.Client.Title}</span> - <span>{listitem.Status}</span>
                   </a>
                 </li>
               );
