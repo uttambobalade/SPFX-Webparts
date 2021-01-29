@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "anonymous-ap-in-ext-lib-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/anonymousApInExtLib/AnonymousApInExtLibWebPart.js",
+          "manifest": "./src/webparts/anonymousApInExtLib/AnonymousApInExtLibWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "AnonymousApInExtLibWebPartStrings": "lib/webparts/anonymousApInExtLib/loc/{locale}.js"
+  }
+}
